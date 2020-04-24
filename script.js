@@ -12,6 +12,7 @@ var btn4 = document.createElement("button");
 var start = document.createElement("button");
 var buttonContainer = document.querySelector(".button-container");
 var counter = 0;
+var j = 0;
 
 var questions = [
     { "q": "What is the capital of France?",
@@ -50,10 +51,10 @@ buttonContainer.append(start);
 start.setAttribute("style","background-color: #FFD51B;","style","border-radius: 0.3em;")
 start.textContent = "Start";
 
-btn1.setAttribute("class", "button1");
-btn2.setAttribute("class", "button2");
-btn3.setAttribute("class", "button3");
-btn4.setAttribute("class", "button4");
+btn1.setAttribute("class", "button");
+btn2.setAttribute("class", "button");
+btn3.setAttribute("class", "button");
+btn4.setAttribute("class", "button");
 
 buttons.append(btn1);
 buttons.append(btn2);
@@ -76,7 +77,6 @@ function assignQuestions() {
     if (counter < questions.length) {
         questionEl.textContent = "Question " + (counter + 1);
         console.log(questions[counter].q);
-        console.log(Object.values(questions));
         text.textContent = questions[counter].q;
         start.style.display = "none";
         buttons.style.display = "block";
@@ -84,42 +84,90 @@ function assignQuestions() {
         btn2.style.display = "block";
         btn3.style.display = "block";
         btn4.style.display = "block";
-        btn1.textContent = questions[counter].a1;
-        btn2.textContent = questions[counter].a2;
-        btn3.textContent = questions[counter].a3;
-        btn4.textContent = questions[counter].a4;
+        var answer1 = btn1.textContent = questions[counter].a1;
+        var answer2 = btn2.textContent = questions[counter].a2;
+        var answer3 = btn3.textContent = questions[counter].a3;
+        var answer4 = btn4.textContent = questions[counter].a4;
         counter ++;
-        btnCalls(counter);
+        btnCalls(counter,answer1,answer2,answer3,answer4);
+    } else {
+        console.log("Quiz finished");
     }
 }
 
-function btnCalls(counter) {
+function btnCalls(counter,answer1,answer2,answer3,answer4) {
       if (btn1.addEventListener('click',function(event){
-        console.log("Hi");
+        event.stopPropagation();
         count = counter;
-
+        var a1 = answer1;
+        checkAnswer(count,a1);
+        assignQuestions();
+        return counter;
       })) {
         
       } else if (btn2.addEventListener('click',function(event){
-        console.log("Hi");
+        event.stopPropagation();
         count = counter;
+        var a2 = answer2;
+        checkAnswer(count,a2);
+        assignQuestions();
       })) {
 
       } else if (btn3.addEventListener('click',function(event){
-        console.log("Hi");
+        event.stopPropagation();
         count = counter;
+        var a3 = answer3;
+        checkAnswer(count,a3);
+        assignQuestions();
       })) { 
 
       } else if (btn4.addEventListener('click',function(event){
-        console.log("Hi");
+        event.stopPropagation();
         count = counter;
+        var a4 = answer4;
+        checkAnswer(count,a4);
+        assignQuestions();
       })) { 
           
       }
 }
 
-function compareAnswer() {
-    console.log("Hi");
+function checkAnswer(i,a) {
+    i = j;
+    j++;
+    console.log(i);
+    if (i === 0){
+        if (a === "Paris") {
+            begin.append("Correct!")
+            return i;
+        } else {
+            begin.append("Incorrect");
+        }
+    } else if (i === 1) {
+        if (a === "9.81") {
+            console.log("Correct");
+        } else {
+            console.log("Incorrect");
+        }
+    } else if (i === 2) {
+        if (a === "206") {
+            console.log("Correct");
+        } else {
+            console.log("Incorrect");
+        }
+    } else if (i === 3) {
+        if (a === "Roma") {
+            console.log("Correct");
+        } else {
+            console.log("Incorrect");
+        }
+    } else if (i === 4) {
+        if (a === "Russia") {
+            console.log("Correct");
+        } else {
+            console.log("Incorrect");
+        }
+    }
 }
 
 start.addEventListener('click',function(event){
