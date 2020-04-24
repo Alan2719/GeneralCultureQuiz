@@ -10,11 +10,12 @@ var btn2 = document.createElement("button");
 var btn3 = document.createElement("button");
 var btn4 = document.createElement("button");
 var start = document.createElement("button");
-var buttonContainer = document.querySelector(".button-container")
+var buttonContainer = document.querySelector(".button-container");
+var counter = 0;
 
 var questions = [
     { "q": "What is the capital of France?",
-        a1: "France",
+        a1: "Paris",
         a2: "Berlin",
         a3: "Montevideo",
         a4: "Washington"
@@ -49,6 +50,11 @@ buttonContainer.append(start);
 start.setAttribute("style","background-color: #FFD51B;","style","border-radius: 0.3em;")
 start.textContent = "Start";
 
+btn1.setAttribute("class", "button1");
+btn2.setAttribute("class", "button2");
+btn3.setAttribute("class", "button3");
+btn4.setAttribute("class", "button4");
+
 buttons.append(btn1);
 buttons.append(btn2);
 buttons.append(btn3);
@@ -67,26 +73,52 @@ function setTime(){
 
 
 function assignQuestions() {
-    for (var i = 0; i < questions.length; i++) {
-        questionEl.textContent = "Question " + i;
-        console.log(questions[i].q);
+    if (counter < questions.length) {
+        questionEl.textContent = "Question " + (counter + 1);
+        console.log(questions[counter].q);
         console.log(Object.values(questions));
-        text.textContent = questions[i].q;
+        text.textContent = questions[counter].q;
         start.style.display = "none";
         buttons.style.display = "block";
         btn1.style.display = "block";
         btn2.style.display = "block";
         btn3.style.display = "block";
         btn4.style.display = "block";
-        btn1.textContent = questions[i].a1;
-        btn2.textContent = questions[i].a2;
-        btn3.textContent = questions[i].a3;
-        btn4.textContent = questions[i].a4;
-        checkAnswer();
+        btn1.textContent = questions[counter].a1;
+        btn2.textContent = questions[counter].a2;
+        btn3.textContent = questions[counter].a3;
+        btn4.textContent = questions[counter].a4;
+        counter ++;
+        btnCalls(counter);
     }
 }
 
-function checkAnswer() {
+function btnCalls(counter) {
+      if (btn1.addEventListener('click',function(event){
+        console.log("Hi");
+        count = counter;
+
+      })) {
+        
+      } else if (btn2.addEventListener('click',function(event){
+        console.log("Hi");
+        count = counter;
+      })) {
+
+      } else if (btn3.addEventListener('click',function(event){
+        console.log("Hi");
+        count = counter;
+      })) { 
+
+      } else if (btn4.addEventListener('click',function(event){
+        console.log("Hi");
+        count = counter;
+      })) { 
+          
+      }
+}
+
+function compareAnswer() {
     console.log("Hi");
 }
 
