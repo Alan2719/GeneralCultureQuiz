@@ -17,13 +17,16 @@
                 <button class="high-scores">View Highscores</button>
             </div>
             <div class="timer">
-                <h2><span id="seconds">120</span> seconds left</h2>
+                <h2><span id="seconds">60</span> seconds left</h2>
             </div>
         </nav>
     </header>
     <main class="container">
         <div class="row">
             <div class="col-sm-3">
+                <div class="incorrect">
+
+                </div>
             </div>
             <div class="col-sm-5">
               <div class="card">
@@ -31,18 +34,24 @@
                   <h5 class="card-title"><span id="word-question">General knowledge test</span><span id="question-number"></span></h5>
                   <p><span class="card-text">This is a general knowledge test. There will be 4 possible answers, but just one is the correct. Click the button with the correct answer. Good luck!</span></p>
                   <div class="button-container">
-                    <!--<button type="button" class="btn btn-primary"><span id="start">Start</span></button>-->
+                    <button type="button" class="btn btn-primary" id="startQuiz"><span id="start">Start</span></button>
                   </div>
                   <div class="buttons">
-                    <!--<button type="button" class="btn btn-primary" id="btn-1"><span id="answer1"></span></button>
+                    <button type="button" class="btn btn-primary" id="btn-1"><span id="answer1"></span></button>
                     <button type="button" class="btn btn-primary" id="btn-2"><span id="answer2"></span></button>
                     <button type="button" class="btn btn-primary" id="btn-3"><span id="answer3"></span></button>
-                    <button type="button" class="btn btn-primary" id="btn-4"><span id="answer4"></span></button>-->
+                    <button type="button" class="btn btn-primary" id="btn-4"><span id="answer4"></span></button>
+                    </div>
+                    <div class="score">
+                        <h3></h3>
                     </div>
                 </div>
               </div>
             </div>
             <div class="col-sm-3">
+                <div class="correct">
+                    
+                </div>
             </div>
         </div>
     </main>

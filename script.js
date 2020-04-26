@@ -1,65 +1,80 @@
 var begin = document.querySelector(".card-body");
-var secondsLeft = 120;
 var secondsEl = document.querySelector("#seconds");
 var questionEl = document.querySelector("#word-question");
 var questionNum = document.querySelector("#question-number");
 var text = document.querySelector(".card-text");
 var buttons = document.querySelector(".buttons");
-var btn1 = document.createElement("button");
-var btn2 = document.createElement("button");
-var btn3 = document.createElement("button");
-var btn4 = document.createElement("button");
-var start = document.createElement("button");
+var score = document.querySelector(".score");
 var buttonContainer = document.querySelector(".button-container");
-var counter = 0;
-var j = 0;
+var btn1 = document.querySelector("#btn-1");
+var btn2 = document.querySelector("#btn-2");
+var btn3 = document.querySelector("#btn-3");
+var btn4 = document.querySelector("#btn-4");
+var start = document.querySelector(".btn");
+var showCorrect = document.querySelector(".correct")
+var showIncorrect = document.querySelector(".incorrect")
+var label = document.createElement("label");
+var InputScore = document.createElement("input");
+var submit = document.createElement("button");
+var secondsLeft = 60;
 
 var questions = [
     { "q": "What is the capital of France?",
         a1: "Paris",
         a2: "Berlin",
         a3: "Montevideo",
-        a4: "Washington"
+        a4: "Washington",
+        correct: "Paris"
     },
     { "q": "What is the value of the gravity on planet Earth",
         a1: "8.91",
         a2: "10.81",
         a3: "9.81",
-        a4: "7.81"
+        a4: "7.81",
+        correct: "9.81"
     },
     { "q": "How many bones does the human body have?",
         a1: "200",
         a2: "206",
         a3: "205",
-        a4: "210"
+        a4: "210",
+        correct: "206"
     },
     { "q": "In which state of Italy is the Vatican city?",
         a1: "Firenze",
         a2: "Milano",
         a3: "Roma",
-        a4: "Venezia"
+        a4: "Venezia",
+        correct: "Roma"
     },
     { "q": "What is the largest country in Europe?",
         a1: "Spain",
         a2: "Italy",
         a3: "France",
-        a4: "Russia"
+        a4: "Russia",
+        correct: "Russia"
     }
 ];
 
-buttonContainer.append(start);
-start.setAttribute("style","background-color: #FFD51B;","style","border-radius: 0.3em;")
-start.textContent = "Start";
+/*Styles for the buttons*/ 
+label.textContent = "Enter Initials: ";
 
-btn1.setAttribute("class", "button");
-btn2.setAttribute("class", "button");
-btn3.setAttribute("class", "button");
-btn4.setAttribute("class", "button");
+submit.textContent = "Submit";
+submit.setAttribute("style","background-color: #FFD51B;")
 
-buttons.append(btn1);
-buttons.append(btn2);
-buttons.append(btn3);
-buttons.append(btn4);
+btn1.setAttribute("style","margin: 5px;");
+btn2.setAttribute("style","margin: 5px;");
+btn3.setAttribute("style","margin: 5px;");
+btn4.setAttribute("style","margin: 5px;");
+
+var lastQuestion = questions.length - 1;
+var indexQuestion = 0;
+var score = 0;
+
+function startQuiz(){  //Run quiz, start timer, and text Questions.
+    setTime();
+    appendQuestions();
+}
 
 function setTime(){
     var timerInterval = setInterval(function() {
@@ -73,121 +88,96 @@ function setTime(){
 }
 
 
-function assignQuestions() {
-    if (counter < questions.length) {
-        questionEl.textContent = "Question " + (counter + 1);
-        console.log(questions[counter].q);
-        text.textContent = questions[counter].q;
-        start.style.display = "none";
-        buttons.style.display = "block";
-        btn1.style.display = "block";
-        btn2.style.display = "block";
-        btn3.style.display = "block";
-        btn4.style.display = "block";
-        var answer1 = btn1.textContent = questions[counter].a1;
-        var answer2 = btn2.textContent = questions[counter].a2;
-        var answer3 = btn3.textContent = questions[counter].a3;
-        var answer4 = btn4.textContent = questions[counter].a4;
-        counter ++;
-        btnCalls(counter,answer1,answer2,answer3,answer4);
-    } else {
-        console.log("Quiz finished");
-    }
+function appendQuestions() {
+    console.log(indexQuestion);
+    questionEl.textContent = "Question " + (indexQuestion + 1);
+    console.log(questions[indexQuestion].q);
+    text.textContent = questions[indexQuestion].q;
+    start.style.display = "none"; //Hide start button
+    buttons.style.display = "block";
+    btn1.style.display = "block";
+    btn2.style.display = "block";
+    btn3.style.display = "block";
+    btn4.style.display = "block";
+    btn1.textContent = questions[indexQuestion].a1;
+    btn2.textContent = questions[indexQuestion].a2;
+    btn3.textContent = questions[indexQuestion].a3;
+    btn4.textContent = questions[indexQuestion].a4;
+    assignAnswer()
 }
 
-function btnCalls(counter,answer1,answer2,answer3,answer4) {
+function assignAnswer() {
       if (btn1.addEventListener('click',function(event){
         event.stopPropagation();
-        count = counter;
-        var a1 = answer1;
-        checkAnswer(count,a1);
-        assignQuestions();
-        return counter;
+        console.log(event.target);
+        var answer = questions[indexQuestion].a1;
+        checkAnswer(answer);
       })) {
         
       } else if (btn2.addEventListener('click',function(event){
         event.stopPropagation();
-        count = counter;
-        var a2 = answer2;
-        checkAnswer(count,a2);
-        assignQuestions();
+        var answer = questions[indexQuestion].a2;
+        checkAnswer(answer);
       })) {
 
       } else if (btn3.addEventListener('click',function(event){
         event.stopPropagation();
-        count = counter;
-        var a3 = answer3;
-        checkAnswer(count,a3);
-        assignQuestions();
+        var answer = questions[indexQuestion].a3;
+        checkAnswer(answer);
       })) { 
 
       } else if (btn4.addEventListener('click',function(event){
         event.stopPropagation();
-        count = counter;
-        var a4 = answer4;
-        checkAnswer(count,a4);
-        assignQuestions();
+        var answer = questions[indexQuestion].a4;
+        checkAnswer(answer);
       })) { 
           
       }
 }
 
-function checkAnswer(i,a) {
-    i = j;
-    j++;
-    console.log(i);
-    if (i === 0){
-        if (a === "Paris") {
-            begin.append("Correct!")
-            return i;
-        } else {
-            begin.append("Incorrect");
-        }
-    } else if (i === 1) {
-        if (a === "9.81") {
-            console.log("Correct");
-        } else {
-            console.log("Incorrect");
-        }
-    } else if (i === 2) {
-        if (a === "206") {
-            console.log("Correct");
-        } else {
-            console.log("Incorrect");
-        }
-    } else if (i === 3) {
-        if (a === "Roma") {
-            console.log("Correct");
-        } else {
-            console.log("Incorrect");
-        }
-    } else if (i === 4) {
-        if (a === "Russia") {
-            console.log("Correct");
-        } else {
-            console.log("Incorrect");
-        }
+function checkAnswer(answer){
+    if (answer == questions[indexQuestion].correct){
+        score = score + 10;
+        correctMessage();
+    } else {
+        score = score - 10;
+        incorrectMessage();
     }
 }
 
-start.addEventListener('click',function(event){
-    event.preventDefault();
-    setTime();
-    console.log((event.target.parentElement).parentElement);
-    assignQuestions();
-})
+function correctMessage() {
+    showCorrect.textContent = "Correct!!"
+    setTimeout(function(){
+        showCorrect.textContent = ""
+    }, 2000);
+    indexQuestion++;
+    if (indexQuestion !== lastQuestion) {
+        appendQuestions(indexQuestion);
+    } else {
+        showScore();
+    }
+}
+
+function incorrectMessage() {
+    showIncorrect.textContent = "Incorrect!!"
+    setTimeout(function(){
+        showIncorrect.textContent = ""
+    }, 2000);
+    indexQuestion++;
+    if (indexQuestion !== lastQuestion) {
+        appendQuestions(indexQuestion);
+    } else {
+        showScore();
+    }
+}
+
+function showScore() {
+    buttons.style.display = "none";
+    questionEl.textContent = "Test Finished!";
+    text.textContent = "Your final score is " + score;
+}
+
+start.addEventListener('click',startQuiz);
 
 
 
-//Empezar por el nivel màs pequeño, en este caso el botòn de start
-//Usar el spread para que no se recorrar a los padres
-//No hacer un loop, sino que las respuestas, sean correctas o 
-//incorrectas, son las que llaman a las siguiente preguntas. 
-//Create elements from javascript.
-//Array of highscores.
-
-//Hacer un contador en lugar de un ciclo for y hacer otra función con un
-//if en donde estén los addEventListener. A los botones se les dará una
-//misma clase*. Cuando se active un addEventListener regresar a la función
-//assignQuestions y agregar uno al contador. Poner un if al principio
-//para verificar que no se pase del largo del array de las preguntas. 
