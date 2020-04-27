@@ -19,12 +19,13 @@ var nameInput = document.createElement("input");
 var submit = document.createElement("button");
 var closeQuiz = document.createElement("button");
 var lastDiv = document.querySelector(".score");
-var secondsLeft = 30;
+var secondsLeft = 20;
 var table = document.querySelector(".table");
 var mainContainer = document.querySelector(".container");
 var tableName = document.querySelector("#tableName");
 var tableScore = document.querySelector("#tableScore");
 var closeButton = document.querySelector(".closeButton");
+var quizDone = false;
 
 /*Array with objects for the questions*/ 
 var questions = [
@@ -33,35 +34,35 @@ var questions = [
         a2: "Berlin",
         a3: "Montevideo",
         a4: "Washington",
-        correct: "Paris"
+        correct: 1
     },
     { "q": "What is the value of the gravity on planet Earth",
         a1: "8.91",
         a2: "10.81",
         a3: "9.81",
         a4: "7.81",
-        correct: "9.81"
+        correct: 3
     },
     { "q": "How many bones does the human body have?",
         a1: "200",
         a2: "206",
         a3: "205",
         a4: "210",
-        correct: "206"
+        correct: 2
     },
     { "q": "In which state of Italy is the Vatican city?",
         a1: "Firenze",
         a2: "Milano",
         a3: "Roma",
         a4: "Venezia",
-        correct: "Roma"
+        correct: 3
     },
     { "q": "What is the largest country in Europe?",
         a1: "Spain",
         a2: "Italy",
         a3: "France",
         a4: "Russia",
-        correct: "Russia"
+        correct: 4
     }
 ];
 
@@ -95,15 +96,17 @@ function setTime(){
         secondsLeft--;
         secondsEl.textContent = secondsLeft;
 
-        if (secondsLeft === 0) {
+        if (secondsLeft === 0 || quizDone) {
             clearInterval(timerInterval);
         }
     }, 1000)
 }
 
-var lastQuestion = questions.length - 1;
+var lastQuestion = questions.length;
 var indexQuestion = 0;
 var score = 0;
+var dataIndex = 0;
+console.log(lastQuestion);
 
 //Display the button and the questions once the start button is clicked
 function appendQuestions() {
@@ -119,33 +122,16 @@ function appendQuestions() {
     btn2.textContent = questions[indexQuestion].a2;
     btn3.textContent = questions[indexQuestion].a3;
     btn4.textContent = questions[indexQuestion].a4;
-    btn1.addEventListener('click',function(event){
-        var answer1 = event.target.textContent;
-        checkAnswer(answer1);
-        });
-    btn2.addEventListener('click',function(event){
-        var answer2 = event.target.textContent;
-        checkAnswer(answer2);
-    });
-    btn3.addEventListener('click',function(event){
-        var answer3 = event.target.textContent;
-        checkAnswer(answer3);
-    });
-    btn4.addEventListener('click',function(event){
-        var answer4 = event.target.textContent;
-        checkAnswer(answer4);
-        });
 }
-
 //Check if the answer is correct. When you click the button, the
 //target is the string and compare it with the answers inside the
 //objects.
 function checkAnswer(a) {
         if (a == questions[indexQuestion].correct) {
-            score = score + 10;
+            secondsLeft = secondsLeft + 5;
             correctMessage();
         } else {
-            score = score - 10;
+            secondsLeft = secondsLeft - 5;
             incorrectMessage();
         }
 }
@@ -158,7 +144,7 @@ function correctMessage() {
     showCorrect.textContent = "Correct!!"
     setTimeout(function(){
         showCorrect.textContent = ""
-    }, 2000);
+    }, 1500);
     indexQuestion++;
     if (indexQuestion !== lastQuestion) {
         appendQuestions(indexQuestion);
@@ -172,7 +158,7 @@ function incorrectMessage() {
     showIncorrect.textContent = "Incorrect!!"
     setTimeout(function(){
         showIncorrect.textContent = ""
-    }, 2000);
+    }, 1500);
     indexQuestion++;
     if (indexQuestion !== lastQuestion) {
         appendQuestions(indexQuestion);
@@ -184,17 +170,20 @@ function incorrectMessage() {
 //When the condition is false, th program displays the input, the
 //final score and a submit button. 
 function showScore() {
+    quizDone = true;
+    setTime(quizDone);
     buttons.style.display = "none";
     questionEl.textContent = "Test Finished!";
+    seconds.textContent = secondsLeft;
     var newline = "\r\n"
-    text.textContent = "Your final score is " + score + "." + newline;
+    text.textContent = "Your final score is " + secondsLeft + "." + newline;
     text.append(newline);
     text.append(label);
     text.append(nameInput);
     text.append(submit);
     submit.addEventListener('click',function(){
         var playerName = nameInput.value;
-        var playerScore = score;
+        var playerScore = secondsLeft;
         if (playerName === "") {
             showCorrect.textContent = "Invalid Name";
         } else {
@@ -202,14 +191,40 @@ function showScore() {
             localStorage.setItem('name',playerName);
             localStorage.setItem('score',playerScore);
             lastDiv.append(closeQuiz);
-            tableName.textContent = playerName;
-            tableScore.textContent = playerScore;
+            playerInfo();
         }
     })
 }
 
+function playerInfo() {
+    tableName.textContent = localStorage.getItem('name');
+    tableScore.textContent = localStorage.getItem('score');
+}
+
 //First addEventListener to the start test button
 start.addEventListener('click',startQuiz);
+
+//Answer buttons
+btn1.addEventListener('click',function(event){
+    console.log(indexQuestion);
+    dataIndex = btn1.getAttribute('data-index',questions[indexQuestion]);
+    checkAnswer(dataIndex);
+    });
+btn2.addEventListener('click',function(event){
+    console.log(indexQuestion);
+    dataIndex = btn2.getAttribute('data-index',questions[indexQuestion]);
+    checkAnswer(dataIndex);
+});
+btn3.addEventListener('click',function(event){
+    console.log(indexQuestion);
+    dataIndex = btn3.getAttribute('data-index',questions[indexQuestion]);
+    checkAnswer(dataIndex);
+});
+btn4.addEventListener('click',function(event){
+    console.log(indexQuestion);
+    dataIndex = btn4.getAttribute('data-index',questions[indexQuestion]);
+    checkAnswer(dataIndex);
+    });
 
 
 highScores.addEventListener('click',function(){
@@ -222,3 +237,4 @@ closeQuiz.addEventListener('click',function(){
     begin.style.display = "block";
     text.style.display = "block";
 })
+
