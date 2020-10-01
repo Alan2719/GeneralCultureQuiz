@@ -208,6 +208,7 @@ start.addEventListener('click',startQuiz);
 btn1.addEventListener('click',function(event){
     console.log(indexQuestion);
     dataIndex = btn1.getAttribute('data-index',questions[indexQuestion]);
+    console.log(dataIndex);
     checkAnswer(dataIndex);
     });
 btn2.addEventListener('click',function(event){
